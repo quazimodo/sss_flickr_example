@@ -19,6 +19,7 @@ group :development, :test do
   gem 'guard'
   gem 'guard-rspec'
   gem 'guard-zeus'
+  gem 'webmock' # Stub out http requests in tests
 end
 
 group :production do
