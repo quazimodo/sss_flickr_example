@@ -16,10 +16,9 @@ gem 'coffee-rails', '~> 4.0.0'
 group :test do
   gem 'rspec-rails'
   gem 'capybara'
-  gem 'spin'
   gem 'guard'
   gem 'guard-rspec'
-  gem 'guard-spin'
+  gem 'guard-zeus'
 end
 
 group :production do
