@@ -28,9 +28,9 @@ describe "flickr image search" do
     click_button 'image search'
 
     # should see 5 hyperlinked images on the page
-    expect(page).to have_xpath('//a/img', count: 4)
+    expect(page).to have_xpath('//img', count: 4)
     # should have the correct image src for the 3rd image
-    expect(page).to have_xpath("//a/img[@src='https://farm9.staticflickr.com/8417/15563878849_91374e0959_t.jpg']")
+    expect(page).to have_xpath("//img[@src='https://farm9.staticflickr.com/8417/15563878849_91374e0959_q.jpg']")
     # should link to the image original, if available] for the 3rd image
     expect(page).to have_xpath("//a[@href='https://farm9.staticflickr.com/8417/15563878849_2c38653b45_o.jpg']")
 

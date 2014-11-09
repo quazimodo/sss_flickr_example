@@ -1,8 +1,61 @@
-= render partial: "form", locals: { q: @q }
+.row
+  .col-md-6
+    = link_to root_path do
+      h3 FlickrSss
+.row
+  .col-md-6
+    #show-form
+      = render partial: "form", locals: { q: @q }
 
 hr
-
-- @photo_album.photos.each do |photo|
-  = link_to photo["url_o"] do
-    = image_tag photo["url_t"]
+.row
+  - @photo_album.photos.each do |photo|
+    .col-md-3
+      .dropdown
+        .thumbnail.dropdown-toggle data-toggle="dropdown"
+          = image_tag photo["url_q"]
+          .caption
+            = truncate photo['title'], length: 46
+        ul class="dropdown-menu" role="menu"
+          li role="presentation" class="dropdown-header"
+            | Select image size
+          li role="presentation"
+            a role="menuitem" tabindex="-1" href="#{photo['url_s']}"
+              | small square 75x75
+          li role="presentation"
+            a role="menuitem" tabindex="-1" href="#{photo['url_q']}"
+              | large square 150x150
+          li role="presentation"
+            a role="menuitem" tabindex="-1" href="#{photo['url_t']}"
+              | thumbnail, 100 on longest side
+          li role="presentation"
+            a role="menuitem" tabindex="-1" href="#{photo['url_m']}"
+              | small, 240 on longest side
+          li role="presentation"
+            a role="menuitem" tabindex="-1" href="#{photo['url_n']}"
+              | small, 320 on longest side
+          li role="presentation"
+            a role="menuitem" tabindex="-1" href="#{photo['url_-']}"
+              | medium, 500 on longest side
+          li role="presentation"
+            a role="menuitem" tabindex="-1" href="#{photo['url_z']}"
+              | medium 640, 640 on longest side
+          li role="presentation"
+            a role="menuitem" tabindex="-1" href="#{photo['url_c']}"
+              | medium 800, 800 on longest side
+          li role="presentation"
+            a role="menuitem" tabindex="-1" href="#{photo['url_b']}"
+              | large, 1024 on longest side
+          li role="presentation"
+            a role="menuitem" tabindex="-1" href="#{photo['url_h']}"
+              | large 1600, 1600 on longest side
+          li role="presentation"
+            a role="menuitem" tabindex="-1" href="#{photo['url_k']}"
+              | large 2048, 2048 on longest side
+          - unless photo['url_o'].blank?
+            li role="presentation"
+              a role="menuitem" tabindex="-1" href="#{photo['url_o']}"
+                | original image, either a jpg, gif or png, depending on source format
+  
+  
 
