@@ -38,11 +38,15 @@ module FlickrSss
     end
 
     def build_urls
-
       photos.each do |photo|
         ["s", "q", "t", "m", "n", "-", "z", "c", "b", "h", "k", "o"].each do |x|
 
-          url = "https://farm#{photo['farm']}.staticflickr.com/#{photo['server']}/#{photo['id']}_#{photo['secret']}_#{x}.jpg"
+          case x
+          when "o"
+            url = "https://farm#{photo['farm']}.staticflickr.com/#{photo['server']}/#{photo['id']}_#{photo['originalsecret']}_#{x}.#{photo['originalformat']}"
+          else
+            url = "https://farm#{photo['farm']}.staticflickr.com/#{photo['server']}/#{photo['id']}_#{photo['secret']}_#{x}.jpg"
+          end
           photo << REXML::Attribute.new("url_#{x}", url)
 
         end
