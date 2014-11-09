@@ -9,6 +9,7 @@ module FlickrSss
     def initialize(body)
       @response_body = body
       @xml = REXML::Document.new body
+      verify_xml
       build_photos
       build_urls
     end
@@ -25,6 +26,10 @@ module FlickrSss
     def total; xml.elements["rsp/photos"].attributes["total"]; end
 
     private
+
+    def verify_xml
+      raise MalformedXMLException if xml.elements["rsp/photos"].blank?
+    end
 
     def build_photos
       @photos = xml.elements["rsp/photos"].elements.map do |photo|

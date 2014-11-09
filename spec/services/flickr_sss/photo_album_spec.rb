@@ -18,6 +18,16 @@ describe FlickrSss::PhotoAlbum do
 
   subject(:album) { FlickrSss::PhotoAlbum.new body }
 
+  it "raises an error if the document is missing required nodes" do
+    body = "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n
+<rsp stat=\"ok\">\n
+  <not_photos page=\"3\" pages=\"750\" perpage=\"5\" total=\"3749\">\n
+  </not_photos>\n
+</rsp>\n"
+
+    expect{FlickrSss::PhotoAlbum.new body}.to raise_error
+  end
+
   it "parses the xml string to an XML object" do
     expect(album.xml).to be_an_instance_of REXML::Document
   end

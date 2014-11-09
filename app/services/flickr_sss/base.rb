@@ -45,4 +45,8 @@ module FlickrSss
     end
 
   end
+
+
+  class MalformedXMLException < Exception
+  end
 end
