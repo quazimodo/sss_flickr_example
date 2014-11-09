@@ -43,12 +43,14 @@ module FlickrSss
 
           case x
           when "o"
-            url = "https://farm#{photo['farm']}.staticflickr.com/#{photo['server']}/#{photo['id']}_#{photo['originalsecret']}_#{x}.#{photo['originalformat']}"
+            unless photo['originalsecret'].blank?
+              url = "https://farm#{photo['farm']}.staticflickr.com/#{photo['server']}/#{photo['id']}_#{photo['originalsecret']}_#{x}.#{photo['originalformat']}"
+              photo << REXML::Attribute.new("url_#{x}", url)
+            end
           else
             url = "https://farm#{photo['farm']}.staticflickr.com/#{photo['server']}/#{photo['id']}_#{photo['secret']}_#{x}.jpg"
+            photo << REXML::Attribute.new("url_#{x}", url)
           end
-          photo << REXML::Attribute.new("url_#{x}", url)
-
         end
       end
     end
