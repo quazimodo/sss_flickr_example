@@ -21,6 +21,10 @@ group :development, :test do
   gem 'guard'
   gem 'guard-rspec'
   gem 'guard-zeus'
+  gem 'dotenv-rails' # set environment variables in tests
+end
+
+group :test do
   gem 'webmock' # Stub out http requests in tests
 end
 
