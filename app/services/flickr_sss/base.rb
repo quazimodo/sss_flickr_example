@@ -4,26 +4,33 @@ module FlickrSss
 
   class Base
 
-    attr_accessor :key, :secret, :endpoint
+    attr_accessor :key, :secret, :endpoint, :flickr
 
     def initialize(opts)
-      self.key = opts[:key]
-      self.secret = opts[:secret]
-      self.endpoint = opts[:endpoint] || FlickrSss::REST_ENDPOINT
+      @key = opts[:key]
+      @secret = opts[:secret]
+      @endpoint = opts[:endpoint] || FlickrSss::REST_ENDPOINT
+      @flickr = self
       validate!
     end
 
+
+    # Simple method for crafting requests to the flickr REST api via HTTP
     def send_request(api_method, opts = {}, action = :get, endpoint = self.endpoint)
 
       opts.merge! method: api_method, api_key: key
-      url = endpoint + "?" + opts.collect{|k,v| "#{k}=#{CGI.escape(v.to_s)}"}.join('&')
 
       case action
       when :get
+        url = endpoint + "?" + opts.collect{|k,v| "#{k}=#{CGI.escape(v.to_s)}"}.join('&')
         Net::HTTP.get URI.parse(url)
       when :post
-        Net::HTTP.post_form URI.parse(endpoint)
+        Net::HTTP.post_form URI.parse(endpoint), opts
       end
+    end
+
+    def photos
+      @photos ||= FlickrSss::Photos.new self
     end
 
     private
