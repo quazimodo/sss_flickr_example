@@ -12,6 +12,11 @@ module FlickrSss
       options.merge!(per_page: per_page) unless per_page.blank?
 
       response = flickr.send_request 'flickr.photos.search', options
+
+      unless response.kind_of? Net::HTTPSuccess
+        raise 'error', response.message
+      end
+
       FlickrSss::PhotoAlbum.new response.body
     end
 

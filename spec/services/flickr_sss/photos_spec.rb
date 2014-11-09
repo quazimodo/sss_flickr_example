@@ -31,6 +31,15 @@ describe FlickrSss::Photos do
 
     end
 
+    it "raises an error if unsuccessful" do
+      stub = stub_request(:get, "https://api.flickr.com:443/services/rest/?api_key=some_key&method=flickr.photos.search&text=search%20string").
+        with(:headers => {'Accept'=>'*/*', 'User-Agent'=>'Ruby'}).
+        to_return(:status => 404, :body => "", :headers => {})
+
+      expect{photos.search "search string"}.to raise_error
+    end
+
+
     it "accepts a hash of options" do
 
       stub = stub_request(:get, "https://api.flickr.com:443/services/rest/?accuracy=1&api_key=some_key&method=flickr.photos.search&tags=foo,bar,zed&text=search%20string").
