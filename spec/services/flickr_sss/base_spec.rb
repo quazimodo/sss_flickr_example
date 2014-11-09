@@ -32,7 +32,7 @@ describe FlickrSss::Base do
       # so we are stuck with it till I figure out something better.
 
       # I don't like these tests
-      stub = stub_request(:get, "http://api.flickr.com:443/services/rest/?api_key=some_key&method=fake_method").
+      stub = stub_request(:get, "https://api.flickr.com:443/services/rest/?api_key=some_key&method=fake_method").
         with(:headers => {'Accept'=>'*/*', 'User-Agent'=>'Ruby'}).
         to_return(:status => 200, :body => "", :headers => {})
 
@@ -50,10 +50,12 @@ describe FlickrSss::Base do
     end
 
     it "defaults to GET action" do
+      stub = stub_request(:get, "https://api.flickr.com/services/rest/?api_key=some_key&method=fake_method").
+        with(:headers => {'Accept'=>'*/*', 'User-Agent'=>'Ruby'}).
+        to_return(:status => 200, :body => "", :headers => {})
 
-      expect(Net::HTTP).to receive(:get)
       flickr.send_request :fake_method
-
+      expect(stub).to have_been_requested
     end
 
     it "allows us to specify POST action" do
@@ -68,7 +70,7 @@ describe FlickrSss::Base do
       transmitted_opts = "api_key=some_key&method=fake_method&zooby=looby"
       uri = URI.parse(FlickrSss::REST_ENDPOINT + "?" + transmitted_opts)
 
-      stub = stub_request(:get, "http://api.flickr.com:443/services/rest/?api_key=some_key&method=fake_method&zooby=looby").
+      stub = stub_request(:get, "https://api.flickr.com:443/services/rest/?api_key=some_key&method=fake_method&zooby=looby").
         with(:headers => {'Accept'=>'*/*', 'User-Agent'=>'Ruby'}).
         to_return(:status => 200, :body => "", :headers => {})
 

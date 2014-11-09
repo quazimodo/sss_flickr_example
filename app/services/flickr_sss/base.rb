@@ -22,8 +22,13 @@ module FlickrSss
 
       case action
       when :get
-        url = endpoint + "?" + opts.collect{|k,v| "#{k}=#{CGI.escape(v.to_s)}"}.join('&')
-        Net::HTTP.get URI.parse(url)
+        url_string = endpoint + "?" + opts.collect{|k,v| "#{k}=#{CGI.escape(v.to_s)}"}.join('&')
+        url = URI.parse(url_string)
+        req = Net::HTTP::Get.new url.request_uri
+
+        Net::HTTP.start(url.host, url.port, use_ssl: url.scheme == 'https') do |http|
+          http.request req
+        end
       when :post
         Net::HTTP.post_form URI.parse(endpoint), opts
       end
