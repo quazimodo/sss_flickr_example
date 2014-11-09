@@ -1,0 +1,8 @@
+= render partial: "form", locals: { q: @q }
+
+hr
+
+- @photo_album.photos.each do |photo|
+  = link_to photo["url_o"] do
+    = image_tag photo["url_t"]
+
