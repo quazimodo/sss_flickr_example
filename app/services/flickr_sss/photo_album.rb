@@ -6,12 +6,13 @@ module FlickrSss
 
     attr_accessor :response_body, :xml, :photos
 
-    def initialize(body)
+    def initialize(body, opts = {})
       @response_body = body
       @xml = REXML::Document.new body
       verify_xml
       build_photos
-      build_urls
+      build_urls unless opts[:build_urls].blank?
+      build_largest_photo_url
     end
 
     # I could use metaprogramming here, but given the very few methods, this is
@@ -35,6 +36,23 @@ module FlickrSss
       @photos = xml.elements["rsp/photos"].elements.map do |photo|
         photo.attributes
       end
+    end
+
+    def build_largest_photo_url
+
+      photos.each do |photo|
+
+        ["o", "k", "h", "b", "c", "z", "-", "n", "m", "t", "q", "s"].each do |x|
+
+          if photo.has_key? "url_#{x}"
+            photo << REXML::Attribute.new("url_large", photo["url_#{x}"])
+            break
+          end
+
+        end
+
+      end
+
     end
 
     def build_urls
