@@ -18,7 +18,7 @@ describe PaginateSss do
     album
   end
 
-  let(:paginator) { PaginateSss.new(photo_album, params)}
+  let(:paginator) { PaginateSss.new(photo_album, params, "searchy")}
 
   it "returns the current page" do
     expect(paginator.page).to eq 5
@@ -31,21 +31,26 @@ describe PaginateSss do
 
   describe "#url_for" do
 
+    it "returns a url for the passed path" do
+      url = paginator.url_for(1)
+      expect(url).to include "/searchy?"
+    end
+
     it "returns the url for the page specified" do
       url = paginator.url_for(5)
-      expect(url).to eq "/search?page=5&commit=image search&utf8=✓&q=something nice"
+      expect(url).to include "page=5"
     end
 
     it "returns the url for the last page" do
       url = paginator.url_for(:last)
 
-      expect(url).to eq "/search?page=85&commit=image search&utf8=✓&q=something nice"
+      expect(url).to include "page=85"
     end
 
     it "returns the url for the first page" do
       url = paginator.url_for(:first)
 
-      expect(url).to eq "/search?page=1&commit=image search&utf8=✓&q=something nice"
+      expect(url).to include "page=1"
     end
 
   end
