@@ -4,16 +4,11 @@ require 'webmock/rspec'
 describe FlickrSss::PhotoAlbum do
 
   let(:body) do
-    "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n
-<rsp stat=\"ok\">\n
-  <photos page=\"3\" pages=\"750\" perpage=\"5\" total=\"3749\">\n\t
-    <photo id=\"15722897172\" owner=\"127055744@N05\" secret=\"4cdf097efd\" server=\"5615\" farm=\"6\" title=\"pregnancy test\" ispublic=\"1\" isfriend=\"0\" isfamily=\"0\" />\n\t
-    <photo id=\"15080330164\" owner=\"10630857@N04\" secret=\"1935a54750\" server=\"3944\" farm=\"4\" title=\"Sprowston FBU picket on Friday night in Norwich at the start of the latest strike\" ispublic=\"1\" isfriend=\"0\" isfamily=\"0\" />\n\t
-    <photo id=\"15080276024\" owner=\"10630857@N04\" secret=\"5bfce11ebe\" server=\"5608\" farm=\"6\" title=\"Earlham FBU picket on Friday night in Norwich at the start of the latest strike\" ispublic=\"1\" isfriend=\"0\" isfamily=\"0\" />\n\t
-    <photo id=\"9414703379\" owner=\"44494372@N05\" secret=\"0fd95a7804\" server=\"5529\" farm=\"6\" title=\"14x14-Inch Trisonic Wind Tunnel\" ispublic=\"1\" isfriend=\"0\" isfamily=\"0\" />\n\t
-    <photo id=\"15459432537\" owner=\"125915374@N07\" secret=\"b719eef69e\" server=\"5610\" farm=\"6\" title=\"Liam's Imagination\" ispublic=\"1\" isfriend=\"0\" isfamily=\"0\" />\n
-  </photos>\n
-</rsp>\n"
+    "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<rsp stat=\"ok\">\n<photos page=\"1\" pages=\"786391\" perpage=\"5\" total=\"3931952\">\n\t
+<photo id=\"15747759221\" owner=\"40201685@N00\" secret=\"439322c1b6\" server=\"7471\" farm=\"8\" title=\"20141107_M2_35-1.2_FP4_HC110B_18_web\" ispublic=\"1\" isfriend=\"0\" isfamily=\"0\" />\n\t
+<photo id=\"15749645845\" owner=\"40201685@N00\" secret=\"e2d9f9c74e\" server=\"3955\" farm=\"4\" title=\"20141107_M2_35-1.2_FP4_HC110B_35_web\" ispublic=\"1\" isfriend=\"0\" isfamily=\"0\" />\n\t
+<photo id=\"15563878849\" owner=\"127393233@N05\" secret=\"91374e0959\" server=\"8417\" farm=\"9\" title=\"TEST MARKER 2\" ispublic=\"1\" isfriend=\"0\" isfamily=\"0\" originalsecret=\"2c38653b45\" originalformat=\"jpg\" />\n\t
+<photo id=\"15130248943\" owner=\"40201685@N00\" secret=\"4035068210\" server=\"3937\" farm=\"4\" title=\"20141107_M2_35-1.2_FP4_HC110B_33_web\" ispublic=\"1\" isfriend=\"0\" isfamily=\"0\" />\n</photos>\n</rsp>\n"
   end
 
   subject(:album) { FlickrSss::PhotoAlbum.new body }
@@ -34,8 +29,8 @@ describe FlickrSss::PhotoAlbum do
 
   it "builds an array of hash tables, each representing a photo" do
     photo = album.photos[2]
-    expect(photo["id"]).to eq "15080276024"
-    expect(photo["title"]).to eq "Earlham FBU picket on Friday night in Norwich at the start of the latest strike"
+    expect(photo["id"]).to eq "15563878849"
+    expect(photo["title"]).to eq "TEST MARKER 2"
   end
 
   it "builds the urls for each image" do
@@ -47,11 +42,11 @@ describe FlickrSss::PhotoAlbum do
   end
 
   it "tells you the page number" do
-    expect(album.page).to eq "3"
+    expect(album.page).to eq "1"
   end
 
   it "tells you the total number of pages" do
-    expect(album.pages).to eq "750"
+    expect(album.pages).to eq "786391"
   end
 
   it "tells you the per page" do
@@ -59,6 +54,6 @@ describe FlickrSss::PhotoAlbum do
   end
 
   it "tells you the total" do
-    expect(album.total).to eq "3749"
+    expect(album.total).to eq "3931952"
   end
 end

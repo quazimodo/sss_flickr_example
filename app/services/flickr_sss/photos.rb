@@ -7,6 +7,8 @@ module FlickrSss
     end
 
     def search(search_string, options = {}, page = nil, per_page = nil)
+      extras = [options["extras"], "original_format"].join(',')
+      options.merge!(extras: extras)
       options.merge! text: search_string
       options.merge!(page: page) unless page.blank?
       options.merge!(per_page: per_page) unless per_page.blank?
