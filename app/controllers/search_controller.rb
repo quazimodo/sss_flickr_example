@@ -10,7 +10,7 @@ class SearchController < ApplicationController
 
     flickr = FlickrSss.new key: ENV['FLICKR_API_KEY'], secret: ENV['FLICKR_API_SECRET']
     photos = flickr.photos
-    @photo_album = photos.search "#{@q}"
+    @photo_album = photos.search "#{@q}", {}, params[:page]
   end
 
   # GET /search/new

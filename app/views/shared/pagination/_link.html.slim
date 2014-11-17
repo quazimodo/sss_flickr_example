@@ -1,0 +1,12 @@
+ul class="pagination"
+  li
+    a href=paginator.url_for(:first) first
+
+  - paginator.start_page.upto(paginator.end_page) do |p|
+    - css_class = p == paginator.page ? "active" : ""
+    li class=css_class
+      a href=paginator.url_for(p)
+        | #{p}
+
+  li
+    a href=paginator.url_for(:last) last

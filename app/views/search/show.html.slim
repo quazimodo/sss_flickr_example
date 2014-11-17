@@ -8,6 +8,12 @@
       = render partial: "form", locals: { q: @q }
 
 hr
+h3
+  .small
+    | #{@photo_album.total} results
+
+= paginate_links @photo_album
+
 .row.masonry-row
   - @photo_album.photos.each do |photo|
     .masonry-item
@@ -56,3 +62,5 @@ hr
             li role="presentation"
               a role="menuitem" tabindex="-1" href="#{photo['url_o']}"
                 | original image
+
+= paginate_links @photo_album
