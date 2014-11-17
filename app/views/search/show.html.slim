@@ -1,0 +1,66 @@
+.row
+  .col-md-6
+    = link_to root_path do
+      h3 FlickrSss
+.row
+  .col-md-6
+    #show-form
+      = render partial: "form", locals: { q: @q }
+
+hr
+h3
+  .small
+    | #{@photo_album.total} results
+
+= paginate_links @photo_album
+
+.row.masonry-row
+  - @photo_album.photos.each do |photo|
+    .masonry-item
+      .dropdown
+        .thumbnail.dropdown-toggle data-toggle="dropdown"
+          = image_tag photo["url_q"]
+          .caption
+            = truncate photo['title'], length: 46
+        ul class="dropdown-menu" role="menu"
+          li role="presentation" class="dropdown-header"
+            | Select image size
+          li role="presentation"
+            a role="menuitem" tabindex="-1" href="#{photo['url_s']}"
+              | 75x75
+          li role="presentation"
+            a role="menuitem" tabindex="-1" href="#{photo['url_q']}"
+              | 150x150
+          li role="presentation"
+            a role="menuitem" tabindex="-1" href="#{photo['url_t']}"
+              | 100 on longest side
+          li role="presentation"
+            a role="menuitem" tabindex="-1" href="#{photo['url_m']}"
+              | 240 on longest side
+          li role="presentation"
+            a role="menuitem" tabindex="-1" href="#{photo['url_n']}"
+              | 320 on longest side
+          li role="presentation"
+            a role="menuitem" tabindex="-1" href="#{photo['url_-']}"
+              | 500 on longest side
+          li role="presentation"
+            a role="menuitem" tabindex="-1" href="#{photo['url_z']}"
+              | 640 on longest side
+          li role="presentation"
+            a role="menuitem" tabindex="-1" href="#{photo['url_c']}"
+              | 800 on longest side
+          li role="presentation"
+            a role="menuitem" tabindex="-1" href="#{photo['url_b']}"
+              | 1024 on longest side
+          li role="presentation"
+            a role="menuitem" tabindex="-1" href="#{photo['url_h']}"
+              | 1600 on longest side
+          li role="presentation"
+            a role="menuitem" tabindex="-1" href="#{photo['url_k']}"
+              | 2048 on longest side
+          - unless photo['url_o'].blank?
+            li role="presentation"
+              a role="menuitem" tabindex="-1" href="#{photo['url_o']}"
+                | original image
+
+= paginate_links @photo_album
