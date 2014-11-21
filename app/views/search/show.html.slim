@@ -1,0 +1,26 @@
+.row
+  .col-md-6
+    = link_to root_path do
+      h3 FlickrSss
+.row
+  .col-md-6
+    #show-form
+      = render partial: "form", locals: { q: @q }
+
+hr
+h3
+  .small
+    | #{@photo_album.total} results
+
+= paginate_links @photo_album
+
+.row.masonry-row
+  ul
+    - @photo_album.photos.each do |photo|
+      li.masonry-item
+        a.thumbnail href=photo["url_large"]
+          = image_tag photo["url_q"]
+          .caption
+            = truncate photo['title'], length: 46
+
+= paginate_links @photo_album
