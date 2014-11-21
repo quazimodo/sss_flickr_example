@@ -1,3 +1,5 @@
+require "net/http"
+
 module FlickrSss
 
   REST_ENDPOINT = "https://api.flickr.com/services/rest/"
