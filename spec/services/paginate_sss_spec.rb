@@ -53,6 +53,13 @@ describe PaginateSss do
       expect(url).to include "page=1"
     end
 
+    it "returns a valid uri when params have special characters" do
+      params["something"] = "that should break things $@^*("
+      paginator = PaginateSss.new(photo_album, params, "searchy")
+
+      expect{paginator.url_for(1)}.not_to raise_error
+    end
+
   end
 
   it "returns the start page for pagination" do

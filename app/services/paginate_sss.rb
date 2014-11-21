@@ -22,7 +22,7 @@ class PaginateSss
     h1 = { "page" => p, "commit" => "paginate_#{p}" }
     h2 = params.merge(h1)
 
-    "/#{path}?" + h2.map{|k,v| "#{k}=#{v}"}.join("&")
+    "/#{path}?" + h2.to_query
   end
 
   def start_page
