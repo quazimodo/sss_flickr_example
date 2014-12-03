@@ -34,6 +34,8 @@ group :test do
 end
 
 group :production do
+  # needed for heroku's default build pack
+  gem 'pg'
   gem 'rails_12factor'
 end
 
