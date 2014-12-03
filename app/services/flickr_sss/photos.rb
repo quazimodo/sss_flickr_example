@@ -6,7 +6,14 @@ module FlickrSss
       @photos = self
     end
 
-    def search(search_string, options = {}, page = nil, per_page = nil)
+    def search(search_string, opts = {})
+
+      opts[:options] ||= {}
+
+      options = opts[:options]
+      page = opts[:page]
+      per_page = opts[:per_page]
+
       extras = [options["extras"], "original_format",
                 "url_sq", "url_t", "url_s", "url_q",
                 "url_m", "url_n", "url_z", "url_c",

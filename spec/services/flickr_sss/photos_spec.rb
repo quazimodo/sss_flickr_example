@@ -57,7 +57,7 @@ describe FlickrSss::Photos do
 
       stub = simple_stub_request(regex, body: body)
 
-      photos.search "search string", { tags: "foo,bar,zed", accuracy: 1 }
+      photos.search "search string", options: { tags: "foo,bar,zed", accuracy: 1 }
       expect(stub).to have_been_requested
 
     end
@@ -66,7 +66,7 @@ describe FlickrSss::Photos do
 
       stub = simple_stub_request(/https:\/\/api\.flickr\.com\/services\/rest\/\?.*?page=3.*\z/, body: body)
 
-      photos.search "search string", { tags: "foo,bar,zed", accuracy: 1 }, 3
+      photos.search "search string", options: { tags: "foo,bar,zed", accuracy: 1 }, page: 3
       expect(stub).to have_been_requested
 
     end
@@ -75,7 +75,7 @@ describe FlickrSss::Photos do
 
       stub = simple_stub_request(/https:\/\/api\.flickr\.com\/services\/rest\/\?.*?per_page=5.*\z/, body: body)
 
-      photos.search "search string", { tags: "foo,bar,zed", accuracy: 1 }, nil, 5
+      photos.search "search string", options: { tags: "foo,bar,zed", accuracy: 1 }, per_page: 5
       expect(stub).to have_been_requested
 
     end
