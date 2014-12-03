@@ -17,10 +17,7 @@ describe "flickr image search" do
 
   it "returns a number of images as thumbnails with captions from flickr" do
 
-    stub_request(:get, /https:\/\/api\.flickr\.com\/services\/rest\/\?api_key=.*?&method=flickr\.photos\.search&text=.*?\z/).
-      with(:headers => {"Accept"=>"*/*", "User-Agent"=>"Ruby"}).
-      to_return(:status => 200, :body => body, :headers => {})
-
+    simple_stub_request(/https:\/\/api\.flickr\.com\/services\/rest\/\?api_key=.*?&method=flickr\.photos\.search&text=.*?\z/, body: body)
 
     visit new_search_path
     fill_in "q", with: "search term"
@@ -39,27 +36,23 @@ describe "flickr image search" do
 
   it "does pagination" do
 
-    stub_request(:get, /https:\/\/api\.flickr\.com\/services\/rest\/\?api_key=.*?&method=flickr\.photos\.search&text=.*?\z/).
-      with(:headers => {"Accept"=>"*/*", "User-Agent"=>"Ruby"}).
-      to_return(:status => 200, :body => body, :headers => {})
+    page_5_body = "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<rsp stat=\"ok\">\n<photos page=\"5\" pages=\"786391\" perpage=\"5\" total=\"3931952\">\n\t
+<photo id=\"15747759221\" owner=\"40201685@N00\" secret=\"439322c1b6\" server=\"7471\" farm=\"8\" title=\"20141107_M2_35-1.2_FP4_HC110B_18_web\" ispublic=\"1\" isfriend=\"0\" isfamily=\"0\" />\n</photos>\n</rsp>\n"
+
+    simple_stub_request(/https:\/\/api\.flickr\.com\/services\/rest\/\?api_key=.*?&method=flickr\.photos\.search&text=.*?\z/, body: body)
+    simple_stub_request(/https:\/\/api\.flickr\.com\/services\/rest\/\?api_key=.*?page=5.*?\z/, body: page_5_body)
 
     visit new_search_path
     fill_in "q", with: "search term"
 
     click_button "image search"
 
-    page_5_body = "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<rsp stat=\"ok\">\n<photos page=\"5\" pages=\"786391\" perpage=\"5\" total=\"3931952\">\n\t
-<photo id=\"15747759221\" owner=\"40201685@N00\" secret=\"439322c1b6\" server=\"7471\" farm=\"8\" title=\"20141107_M2_35-1.2_FP4_HC110B_18_web\" ispublic=\"1\" isfriend=\"0\" isfamily=\"0\" />\n</photos>\n</rsp>\n"
-
-    stub_request(:get, /https:\/\/api\.flickr\.com\/services\/rest\/\?api_key=.*?page=5.*?\z/).
-      with(:headers => {'Accept'=>'*/*', 'User-Agent'=>'Ruby'}).
-      to_return(:status => 200, :body => page_5_body, :headers => {})
-
     first(:link, "5").click
 
     # page 5 should be selected
     expect(page).to have_selector(".pagination > .active > a[href*='page=5']", count: 2)
     expect(page).to have_xpath("//img", count: 1)
+
   end
 
 end

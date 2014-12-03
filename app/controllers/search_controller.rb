@@ -8,9 +8,8 @@ class SearchController < ApplicationController
        redirect_to root_path and return
     end
 
-    flickr = FlickrSss.new key: ENV['FLICKR_API_KEY'], secret: ENV['FLICKR_API_SECRET']
-    photos = flickr.photos
-    @photo_album = photos.search "#{@q}", {}, params[:page]
+    flickr_photos = FlickrSss.new(key: ENV['FLICKR_API_KEY'], secret: ENV['FLICKR_API_SECRET']).photos
+    @photo_album = flickr_photos.search "#{@q}", page: params[:page]
   end
 
   # GET /search/new

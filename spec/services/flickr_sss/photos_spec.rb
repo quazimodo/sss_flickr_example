@@ -34,65 +34,59 @@ describe FlickrSss::Photos do
   describe "#search" do
 
     it "querys flickr's search resource" do
-      stub = stub_request(:get, /https:\/\/api\.flickr\.com\/services\/rest\/\?.*\z/).
-         with(:headers => {'Accept'=>'*/*', 'User-Agent'=>'Ruby'}).
-         to_return(:status => 200, :body => body, :headers => {})
-      photos.search "search string"
 
+      stub = simple_stub_request(/https:\/\/api\.flickr\.com\/services\/rest\/\?.*\z/, body: body)
+
+      photos.search "search string"
       expect(stub).to have_been_requested
 
     end
 
     it "raises an error if unsuccessful" do
-      stub = stub_request(:get, /https:\/\/api\.flickr\.com\/services\/rest\/\?.*\z/).
-        with(:headers => {'Accept'=>'*/*', 'User-Agent'=>'Ruby'}).
-        to_return(:status => 404, :body => "", :headers => {})
+
+      simple_stub_request(/https:\/\/api\.flickr\.com\/services\/rest\/\?.*\z/, status: 404)
 
       expect{photos.search "search string"}.to raise_error
+
     end
 
 
     it "accepts a hash of options" do
 
-      stub = stub_request(:get, /https:\/\/api\.flickr\.com\/services\/rest\/\?accuracy=1&api_key=.*?&tags=foo,bar,zed&.*\z/).
-        with(:headers => {'Accept'=>'*/*', 'User-Agent'=>'Ruby'}).
-        to_return(:status => 200, :body => body, :headers => {})
+      regex = /https:\/\/api\.flickr\.com\/services\/rest\/\?accuracy=1&api_key=.*?&tags=foo,bar,zed&.*\z/
 
-      photos.search "search string", { tags: "foo,bar,zed", accuracy: 1 }
+      stub = simple_stub_request(regex, body: body)
+
+      photos.search "search string", options: { tags: "foo,bar,zed", accuracy: 1 }
       expect(stub).to have_been_requested
 
     end
 
     it "accepts optional page argument" do
 
-      stub = stub_request(:get, /https:\/\/api\.flickr\.com\/services\/rest\/\?.*?page=3.*\z/).
-        with(:headers => {'Accept'=>'*/*', 'User-Agent'=>'Ruby'}).
-        to_return(:status => 200, :body => body, :headers => {})
+      stub = simple_stub_request(/https:\/\/api\.flickr\.com\/services\/rest\/\?.*?page=3.*\z/, body: body)
 
-      photos.search "search string", { tags: "foo,bar,zed", accuracy: 1 }, 3
+      photos.search "search string", options: { tags: "foo,bar,zed", accuracy: 1 }, page: 3
       expect(stub).to have_been_requested
 
     end
 
     it "accepts optional results per page argument" do
 
-      stub = stub_request(:get, /https:\/\/api\.flickr\.com\/services\/rest\/\?.*?per_page=5.*\z/).
-        with(:headers => {'Accept'=>'*/*', 'User-Agent'=>'Ruby'}).
-        to_return(:status => 200, :body => body, :headers => {})
+      stub = simple_stub_request(/https:\/\/api\.flickr\.com\/services\/rest\/\?.*?per_page=5.*\z/, body: body)
 
-      photos.search "search string", { tags: "foo,bar,zed", accuracy: 1 }, nil, 5
+      photos.search "search string", options: { tags: "foo,bar,zed", accuracy: 1 }, per_page: 5
       expect(stub).to have_been_requested
 
     end
 
     it "returns a photo_album object if successful" do
 
-      stub = stub_request(:get, /https:\/\/api\.flickr\.com\/services\/rest\/\?.*\z/).
-        with(:headers => {'Accept'=>'*/*', 'User-Agent'=>'Ruby'}).
-        to_return(:status => 200, :body => body, :headers => {})
+      stub = simple_stub_request(/https:\/\/api\.flickr\.com\/services\/rest\/\?.*\z/, body: body)
 
       response = photos.search "search string"
       expect(response).to be_an_instance_of FlickrSss::PhotoAlbum
+
     end
 
   end
